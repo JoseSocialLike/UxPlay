@@ -151,6 +151,7 @@ static int log_level = LOGGER_INFO;
 static bool bt709_fix = false;
 static bool srgb_fix = DEFAULT_SRGB_FIX;
 static int nohold = 0;
+static bool nomdns = false;
 static bool nofreeze = false;
 static unsigned short raop_port;
 static unsigned short airplay_port;
@@ -984,6 +985,7 @@ static void print_info (char *name) {
     printf("-nc       Do NOT  Close video window when client stops mirroring\n");
     printf("-nc no    Cancel the -nc option (DO close video window) \n");
     printf("-nohold   Drop current connection when new client connects.\n");
+    printf("-nomdns   Do not register mDNS (DNS-SD) services; for use behind a proxy.\n");
     printf("-restrict Restrict clients to those specified by \"-allow <deviceID>\"\n");
     printf("          UxPlay displays deviceID when a client attempts to connect\n");
     printf("          Use \"-restrict no\" for no client restrictions (default)\n");
@@ -1592,6 +1594,8 @@ static void parse_arguments (int argc, char *argv[]) {
             }
         } else if (arg == "-nohold") {
             nohold = 1;
+        } else if (arg == "-nomdns") {
+            nomdns = true;
         } else if (arg == "-al") {
 	    int n;
             char *end;
@@ -1914,6 +1918,10 @@ static int parse_dmap_header(const unsigned char *metadata, char *tag, int *len)
 }
 
 static int register_dnssd() {
+    if (nomdns) {
+        LOGI("mDNS registration disabled (-nomdns): server will NOT advertise via DNS-SD");
+        return 0;
+    }
     int dnssd_error;
     uint64_t features;
     

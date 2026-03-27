@@ -1,2 +1,32 @@
+# Build directory (out-of-source builds)
 build/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+cmake_uninstall.cmake
+Makefile
+install_manifest.txt
+
+# Compiled objects and libraries
+*.o
+*.o.d
+*.a
+
+# Compiled binary
+/uxplay
+!/uxplay.cpp
+!/uxplay.1
+!/uxplay.service
+!/uxplay.spec
+
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
